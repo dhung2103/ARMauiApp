@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using ARMauiApp.Models;
 using ARMauiApp.Services;
 using System.Collections.ObjectModel;
+using System.Windows.Input;
 
 namespace ARMauiApp.ViewModels
 {
@@ -22,13 +23,23 @@ namespace ARMauiApp.ViewModels
         [ObservableProperty]
         private bool isRefreshing = false;
 
+        public ICommand LoadProductsCommand { get; }
+        public ICommand RefreshProductsCommand { get; }
+        public ICommand SearchProductsCommand { get; }
+        public ICommand ViewProductDetailCommand { get; }
+
         public ProductListViewModel(ProductService productService)
         {
             _productService = productService;
+            
+            // Đăng ký commands trong constructor
+            LoadProductsCommand = new AsyncRelayCommand(LoadProducts);
+            RefreshProductsCommand = new AsyncRelayCommand(RefreshProducts);
+            SearchProductsCommand = new AsyncRelayCommand(SearchProducts);
+            ViewProductDetailCommand = new AsyncRelayCommand<ProductDto?>(ViewProductDetail);
         }
 
-        [RelayCommand]
-        async Task LoadProducts()
+        private async Task LoadProducts()
         {
             if (IsLoading) return;
 
@@ -55,16 +66,14 @@ namespace ARMauiApp.ViewModels
             }
         }
 
-        [RelayCommand]
-        async Task RefreshProducts()
+        private async Task RefreshProducts()
         {
             IsRefreshing = true;
             await LoadProducts();
             IsRefreshing = false;
         }
 
-        [RelayCommand]
-        async Task SearchProducts()
+        private async Task SearchProducts()
         {
             if (IsLoading) return;
 
@@ -90,8 +99,7 @@ namespace ARMauiApp.ViewModels
             }
         }
 
-        [RelayCommand]
-        async Task ViewProductDetail(ProductDto product)
+        private async Task ViewProductDetail(ProductDto? product)
         {
             if (product == null) return;
 

@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using ARMauiApp.Models;
 using ARMauiApp.Services;
 using CommunityToolkit.Maui.Alerts;
+using System.Windows.Input;
 
 namespace ARMauiApp.ViewModels
 {
@@ -11,21 +12,27 @@ namespace ARMauiApp.ViewModels
         private readonly AuthService _authService;
 
         [ObservableProperty]
-        private string email = string.Empty;
+        private string email = "test@example.com";
 
         [ObservableProperty]
-        private string password = string.Empty;
+        private string password = "123456";
 
         [ObservableProperty]
         private bool isLoading = false;
 
+        public ICommand LoginCommand { get; }
+        public ICommand NavigateToRegisterCommand { get; }
+
         public LoginViewModel(AuthService authService)
         {
             _authService = authService;
+            
+            // Đăng ký commands trong constructor
+            LoginCommand = new AsyncRelayCommand(Login);
+            NavigateToRegisterCommand = new AsyncRelayCommand(NavigateToRegister);
         }
 
-        [RelayCommand]
-        async Task Login()
+        private async Task Login()
         {
             if (string.IsNullOrWhiteSpace(Email) || string.IsNullOrWhiteSpace(Password))
             {
@@ -66,8 +73,7 @@ namespace ARMauiApp.ViewModels
             }
         }
 
-        [RelayCommand]
-        async Task NavigateToRegister()
+        private async Task NavigateToRegister()
         {
             await Shell.Current.GoToAsync("//register");
         }
