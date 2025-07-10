@@ -34,7 +34,7 @@ namespace ARMauiApp.ViewModels
         {
             if (string.IsNullOrWhiteSpace(Email) || string.IsNullOrWhiteSpace(Password))
             {
-                await Toast.Make("Please enter email and password").Show();
+                await Toast.Make("Vui lòng nhập email và mật khẩu").Show();
                 return;
             }
 
@@ -52,18 +52,18 @@ namespace ARMauiApp.ViewModels
 
                 if (success)
                 {
-                    await Toast.Make("Login successful!").Show();
+                    await Toast.Make("Đăng nhập thành công!").Show();
                     // Navigate to main page
                     await Shell.Current.GoToAsync("//products");
                 }
                 else
                 {
-                    await Toast.Make("Invalid email or password").Show();
+                    await Toast.Make("Email hoặc mật khẩu không hợp lệ").Show();
                 }
             }
             catch (Exception ex)
             {
-                await Toast.Make($"Login failed: {ex.Message}").Show();
+                await Toast.Make($"Đăng nhập thất bại: {ex.Message}").Show();
             }
             finally
             {
