@@ -132,15 +132,15 @@ namespace ARMauiApp.ViewModels
             {
                 var categoryList = await _categoryService.GetCategoriesAsync();
                 Categories.Clear();
-                
+
                 // Add "All Categories" option
                 Categories.Add(new CategoryDto { Id = "", Name = "Tất cả danh mục", Description = "Hiển thị tất cả sản phẩm" });
-                
+
                 foreach (var category in categoryList)
                 {
                     Categories.Add(category);
                 }
-                
+
                 // Set default selection to "All Categories"
                 SelectedCategory = Categories.FirstOrDefault();
             }
@@ -162,7 +162,7 @@ namespace ARMauiApp.ViewModels
             try
             {
                 List<ProductDto> productList;
-                
+
                 if (string.IsNullOrEmpty(category.Id))
                 {
                     // Show all products
