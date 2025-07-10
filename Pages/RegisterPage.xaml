@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="ARMauiApp.Pages.RegisterPage"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:ARMauiApp.ViewModels"
+             x:DataType="viewmodels:RegisterViewModel"
+             Title="Register"
+             Shell.NavBarIsVisible="False">
+
+    <ScrollView>
+        <StackLayout Padding="30" Spacing="15">
+            
+            <!-- Header -->
+            <StackLayout Margin="0,20,0,30">
+                <Label Text="Create Account" 
+                       FontSize="28" 
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center"
+                       TextColor="{StaticResource Primary}" />
+                <Label Text="Join us today!" 
+                       FontSize="16" 
+                       HorizontalOptions="Center"
+                       TextColor="{AppThemeBinding Light={StaticResource Gray600}, Dark={StaticResource Gray300}}" 
+                       Margin="0,5,0,0" />
+            </StackLayout>
+
+            <!-- Username -->
+            <StackLayout>
+                <Label Text="Username" FontSize="16" FontAttributes="Bold" />
+                <Entry Text="{Binding Username}"
+                       Placeholder="Enter username"
+                       HeightRequest="50" />
+            </StackLayout>
+
+            <!-- Email -->
+            <StackLayout>
+                <Label Text="Email" FontSize="16" FontAttributes="Bold" />
+                <Entry Text="{Binding Email}"
+                       Keyboard="Email"
+                       Placeholder="Enter email"
+                       HeightRequest="50" />
+            </StackLayout>
+
+            <!-- Password -->
+            <StackLayout>
+                <Label Text="Password" FontSize="16" FontAttributes="Bold" />
+                <Entry Text="{Binding Password}"
+                       IsPassword="True"
+                       Placeholder="Enter password"
+                       HeightRequest="50" />
+            </StackLayout>
+
+            <!-- Gender -->
+            <StackLayout>
+                <Label Text="Gender" FontSize="16" FontAttributes="Bold" />
+                <Picker ItemsSource="{Binding GenderOptions}"
+                        SelectedIndex="{Binding SelectedGender}"
+                        HeightRequest="50" />
+            </StackLayout>
+
+            <!-- Height -->
+            <StackLayout>
+                <Label Text="Height (cm)" FontSize="16" FontAttributes="Bold" />
+                <Entry Text="{Binding Height}"
+                       Keyboard="Numeric"
+                       Placeholder="Enter height"
+                       HeightRequest="50" />
+            </StackLayout>
+
+            <!-- Weight -->
+            <StackLayout>
+                <Label Text="Weight (kg)" FontSize="16" FontAttributes="Bold" />
+                <Entry Text="{Binding Weight}"
+                       Keyboard="Numeric"
+                       Placeholder="Enter weight"
+                       HeightRequest="50" />
+            </StackLayout>
+
+            <!-- Register Button -->
+            <Button Text="Create Account" 
+                    Command="{Binding RegisterCommand}"
+                    IsEnabled="{Binding IsLoading, Converter={StaticResource InvertedBoolConverter}}"
+                    BackgroundColor="{StaticResource Primary}"
+                    TextColor="White"
+                    HeightRequest="50"
+                    CornerRadius="25"
+                    FontSize="18"
+                    FontAttributes="Bold"
+                    Margin="0,20,0,0" />
+
+            <!-- Loading Indicator -->
+            <ActivityIndicator IsVisible="{Binding IsLoading}"
+                              IsRunning="{Binding IsLoading}"
+                              Color="{StaticResource Primary}" />
+
+            <!-- Login Link -->
+            <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Margin="0,15,0,0">
+                <Label Text="Already have an account?" />
+                <Label Text="Sign in" 
+                       TextColor="{StaticResource Primary}" 
+                       FontAttributes="Bold"
+                       Margin="5,0,0,0">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding NavigateToLoginCommand}" />
+                    </Label.GestureRecognizers>
+                </Label>
+            </StackLayout>
+
+        </StackLayout>
+    </ScrollView>
+
+</ContentPage>
