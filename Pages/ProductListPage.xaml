@@ -5,7 +5,7 @@
              xmlns:viewmodels="clr-namespace:ARMauiApp.ViewModels"
              xmlns:models="clr-namespace:ARMauiApp.Models"
              x:DataType="viewmodels:ProductListViewModel"
-             x:Name="ProductsListPage"
+             x:Name="ProductsPage"
              Title="Products">
 
     <Grid RowDefinitions="Auto, *">
@@ -50,7 +50,7 @@
                                    Padding="0">
                                 
                                 <Frame.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding Source={x:Reference ProductsListPage}, Path=BindingContext.ViewProductDetailCommand}"
+                                    <TapGestureRecognizer Command="{Binding Source={x:Reference ProductsPage}, Path=BindingContext.ViewProductDetailCommand}"
                                                           CommandParameter="{Binding .}" />
                                 </Frame.GestureRecognizers>
                                 
@@ -91,7 +91,7 @@
                                                TextColor="{StaticResource Primary}" />
                                         
                                         <Button Text="View Details"
-                                                Command="{Binding Source={x:Reference ProductListPage}, Path=BindingContext.ViewProductDetailCommand}"
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:ProductListViewModel}}, Path=ViewProductDetailCommand}"
                                                 CommandParameter="{Binding .}"
                                                 BackgroundColor="{StaticResource Primary}"
                                                 TextColor="White"
