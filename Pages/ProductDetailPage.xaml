@@ -6,8 +6,10 @@
              x:DataType="viewmodels:ProductDetailViewModel"
              Title="Product Details">
 
-    <ScrollView>
-        <StackLayout Spacing="0">
+    <Grid>
+        <!-- Main Content -->
+        <ScrollView>
+            <StackLayout Spacing="0">
             
             <!-- Product Image -->
             <Frame HeightRequest="300"
@@ -25,19 +27,19 @@
             <StackLayout Padding="20" Spacing="15">
                 
                 <!-- Product Name -->
-                <Label Text="{Binding Product.Name}"
+                <Label Text="{Binding Product.Name, FallbackValue='Loading Product Name...'}"
                        FontSize="24"
                        FontAttributes="Bold"
                        TextColor="{AppThemeBinding Light=Black, Dark=White}" />
 
                 <!-- Price -->
-                <Label Text="{Binding Product.Price, StringFormat='${0:F2}'}"
+                <Label Text="{Binding Product.Price, StringFormat='${0:F2}', FallbackValue='$0.00'}"
                        FontSize="20"
                        FontAttributes="Bold"
                        TextColor="{StaticResource Primary}" />
 
                 <!-- Description -->
-                <Label Text="{Binding Product.Description}"
+                <Label Text="{Binding Product.Description, FallbackValue='No description available'}"
                        FontSize="16"
                        TextColor="{AppThemeBinding Light={StaticResource Gray600}, Dark={StaticResource Gray300}}"
                        LineBreakMode="WordWrap" />
@@ -119,13 +121,17 @@
             </StackLayout>
 
         </StackLayout>
-    </ScrollView>
+        </ScrollView>
 
-    <!-- Loading Indicator -->
-    <ActivityIndicator IsVisible="{Binding IsLoading}"
-                      IsRunning="{Binding IsLoading}"
-                      Color="{StaticResource Primary}"
-                      VerticalOptions="Center"
-                      HorizontalOptions="Center" />
+        <!-- Loading Indicator Overlay -->
+        <Grid IsVisible="{Binding IsLoading}"
+              BackgroundColor="{AppThemeBinding Light=#80FFFFFF, Dark=#80000000}">
+            <ActivityIndicator IsRunning="{Binding IsLoading}"
+                              Color="{StaticResource Primary}"
+                              VerticalOptions="Center"
+                              HorizontalOptions="Center"
+                              Scale="1.5" />
+        </Grid>
+    </Grid>
 
 </ContentPage>

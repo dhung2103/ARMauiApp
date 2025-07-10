@@ -70,8 +70,13 @@ namespace ARMauiApp.ViewModels
         {
             if (!string.IsNullOrEmpty(value))
             {
-                Task.Run(LoadProduct);
+                _ = LoadProductAsync();
             }
+        }
+
+        private async Task LoadProductAsync()
+        {
+            await LoadProduct();
         }
     }
 }
