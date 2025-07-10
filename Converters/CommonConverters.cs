@@ -43,8 +43,8 @@ namespace ARMauiApp.Converters
         public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
             if (value is bool isActive)
-                return isActive ? "Active" : "Inactive";
-            return "Unknown";
+                return isActive ? "Hoạt động" : "Không hoạt động";
+            return "Không xác định";
         }
 
         public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)

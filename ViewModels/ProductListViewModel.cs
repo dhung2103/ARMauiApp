@@ -67,7 +67,7 @@ namespace ARMauiApp.ViewModels
             catch (Exception ex)
             {
                 // Handle error
-                await Shell.Current.DisplayAlert("Error", $"Failed to load products: {ex.Message}", "OK");
+                await Shell.Current.DisplayAlert("Lỗi", $"Không thể tải sản phẩm: {ex.Message}", "OK");
             }
             finally
             {
@@ -100,7 +100,7 @@ namespace ARMauiApp.ViewModels
             }
             catch (Exception ex)
             {
-                await Shell.Current.DisplayAlert("Error", $"Search failed: {ex.Message}", "OK");
+                await Shell.Current.DisplayAlert("Lỗi", $"Tìm kiếm thất bại: {ex.Message}", "OK");
             }
             finally
             {
@@ -146,7 +146,7 @@ namespace ARMauiApp.ViewModels
             }
             catch (Exception ex)
             {
-                await Shell.Current.DisplayAlert("Error", $"Failed to load categories: {ex.Message}", "OK");
+                await Shell.Current.DisplayAlert("Lỗi", $"Không thể tải danh mục: {ex.Message}", "OK");
             }
         }
 
@@ -182,7 +182,7 @@ namespace ARMauiApp.ViewModels
             }
             catch (Exception ex)
             {
-                await Shell.Current.DisplayAlert("Error", $"Failed to filter products: {ex.Message}", "OK");
+                await Shell.Current.DisplayAlert("Lỗi", $"Không thể lọc sản phẩm: {ex.Message}", "OK");
             }
             finally
             {

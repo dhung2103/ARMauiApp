@@ -55,7 +55,7 @@ namespace ARMauiApp.ViewModels
             }
             catch (Exception ex)
             {
-                await Shell.Current.DisplayAlert("Error", $"Failed to load product: {ex.Message}", "OK");
+                await Shell.Current.DisplayAlert("Lỗi", $"Không thể tải sản phẩm: {ex.Message}", "OK");
             }
             finally
             {

@@ -2,7 +2,7 @@
 <ContentPage x:Class="ARMauiApp.Pages.AccountPage"
              xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             Title="Account">
+             Title="Tài khoản">
 
     <ScrollView>
         <StackLayout Padding="20" Spacing="20">
@@ -26,7 +26,7 @@
                                TextColor="{StaticResource Primary}" />
                     </Frame>
                     <StackLayout VerticalOptions="Center" Spacing="5">
-                        <Label Text="Demo User"
+                        <Label Text="Người dùng Demo"
                                FontSize="20"
                                FontAttributes="Bold"
                                TextColor="White" />
@@ -54,7 +54,7 @@
                                    FontSize="20"
                                    VerticalOptions="Center" />
                             <Label Grid.Column="1"
-                                   Text="Edit Profile"
+                                   Text="Chỉnh sửa hồ sơ"
                                    FontSize="16"
                                    VerticalOptions="Center"
                                    Margin="15,0,0,0" />
@@ -75,7 +75,7 @@
                                    FontSize="20"
                                    VerticalOptions="Center" />
                             <Label Grid.Column="1"
-                                   Text="Change Password"
+                                   Text="Đổi mật khẩu"
                                    FontSize="16"
                                    VerticalOptions="Center"
                                    Margin="15,0,0,0" />
@@ -104,7 +104,7 @@
                                    FontSize="20"
                                    VerticalOptions="Center" />
                             <Label Grid.Column="1"
-                                   Text="Settings"
+                                   Text="Cài đặt"
                                    FontSize="16"
                                    VerticalOptions="Center"
                                    Margin="15,0,0,0" />
@@ -125,7 +125,7 @@
                                    FontSize="20"
                                    VerticalOptions="Center" />
                             <Label Grid.Column="1"
-                                   Text="Help &amp; Support"
+                                   Text="Trợ giúp &amp; Hỗ trợ"
                                    FontSize="16"
                                    VerticalOptions="Center"
                                    Margin="15,0,0,0" />
@@ -147,17 +147,17 @@
                        CornerRadius="10"
                        Padding="15">
                     <StackLayout Spacing="5">
-                        <Label Text="App Version: 1.0.0"
+                        <Label Text="Phiên bản ứng dụng: 1.0.0"
                                FontSize="14"
                                TextColor="{AppThemeBinding Light={StaticResource Gray600}, Dark={StaticResource Gray300}}" />
-                        <Label Text="Built with .NET MAUI &amp; UraniumUI"
+                        <Label Text="Xây dựng với .NET MAUI &amp; UraniumUI"
                                FontSize="12"
                                TextColor="{AppThemeBinding Light={StaticResource Gray500}, Dark={StaticResource Gray400}}" />
                     </StackLayout>
                 </Frame>
 
                 <!-- Logout Button -->
-                <Button Text="Logout"
+                <Button Text="Đăng xuất"
                         BackgroundColor="{StaticResource Danger}"
                         TextColor="White"
                         HeightRequest="50"

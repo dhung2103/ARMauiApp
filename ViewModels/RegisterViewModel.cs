@@ -29,7 +29,7 @@ namespace ARMauiApp.ViewModels
         [ObservableProperty]
         private bool isLoading = false;
 
-        public List<string> GenderOptions { get; } = new() { "Male", "Female", "Other" };
+        public List<string> GenderOptions { get; } = new() { "Nam", "Nữ", "Khác" };
 
         public RegisterViewModel(AuthService authService)
         {
@@ -41,13 +41,13 @@ namespace ARMauiApp.ViewModels
         {
             if (string.IsNullOrWhiteSpace(Username) || string.IsNullOrWhiteSpace(Email) || string.IsNullOrWhiteSpace(Password))
             {
-                await Toast.Make("Please fill in all required fields").Show();
+                await Toast.Make("Vui lòng điền đầy đủ các trường bắt buộc").Show();
                 return;
             }
 
             if (Password.Length < 6)
             {
-                await Toast.Make("Password must be at least 6 characters").Show();
+                await Toast.Make("Mật khẩu phải có ít nhất 6 ký tự").Show();
                 return;
             }
 
@@ -70,17 +70,17 @@ namespace ARMauiApp.ViewModels
 
                 if (success)
                 {
-                    await Toast.Make("Registration successful! Please login.").Show();
+                    await Toast.Make("Đăng ký thành công! Vui lòng đăng nhập.").Show();
                     await Shell.Current.GoToAsync("//login");
                 }
                 else
                 {
-                    await Toast.Make("Registration failed. Please try again.").Show();
+                    await Toast.Make("Đăng ký thất bại. Vui lòng thử lại.").Show();
                 }
             }
             catch (Exception ex)
             {
-                await Toast.Make($"Registration failed: {ex.Message}").Show();
+                await Toast.Make($"Đăng ký thất bại: {ex.Message}").Show();
             }
             finally
             {

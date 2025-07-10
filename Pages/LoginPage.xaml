@@ -8,7 +8,7 @@
              xmlns:m="clr-namespace:UraniumUI.Icons.MaterialSymbols;assembly=UraniumUI.Icons.MaterialSymbols"
              xmlns:viewmodels="clr-namespace:ARMauiApp.ViewModels"
              x:DataType="viewmodels:LoginViewModel"
-             Title="Login"
+             Title="Đăng nhập"
              Shell.NavBarIsVisible="False">
 
     <ScrollView>
@@ -16,12 +16,12 @@
             
             <!-- Header -->
             <StackLayout Grid.Row="0" Margin="0,40,0,40">
-                <Label Text="Welcome Back" 
+                <Label Text="Chào mừng trở lại" 
                        FontSize="32" 
                        FontAttributes="Bold"
                        HorizontalOptions="Center"
                        TextColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}" />
-                <Label Text="Sign in to your account" 
+                <Label Text="Đăng nhập vào tài khoản của bạn" 
                        FontSize="16" 
                        HorizontalOptions="Center"
                        TextColor="{AppThemeBinding Light={StaticResource Gray600}, Dark={StaticResource Gray300}}" 
@@ -38,22 +38,22 @@
                                        Text="{Binding Email}"
                                        Keyboard="Email"
                                        Icon="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static m:MaterialSharp.Mail}}">
-                        <validation:RequiredValidation Message="Email is required" />
+                        <validation:RequiredValidation Message="Email là bắt buộc" />
                         <validation:RegexValidation Pattern="{x:Static input:AdvancedEntry.REGEX_EMAIL}" 
-                                                   Message="Invalid email format" />
+                                                   Message="Định dạng email không hợp lệ" />
                     </material:TextField>
 
                     <!-- Password -->
-                    <material:TextField Title="Password" 
+                    <material:TextField Title="Mật khẩu" 
                                        Text="{Binding Password}"
                                        IsPassword="True"
                                        Icon="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static m:MaterialSharp.Lock}}">
-                        <validation:RequiredValidation Message="Password is required" />
-                        <validation:MinLengthValidation MinLength="6" Message="Password must be at least 6 characters" />
+                        <validation:RequiredValidation Message="Mật khẩu là bắt buộc" />
+                        <validation:MinLengthValidation MinLength="6" Message="Mật khẩu phải có ít nhất 6 ký tự" />
                     </material:TextField>
 
                     <!-- Login Button -->
-                    <Button Text="Sign In" 
+                    <Button Text="Đăng nhập" 
                             Command="{Binding LoginCommand}"
                             IsEnabled="{Binding IsLoading, Converter={StaticResource InvertedBoolConverter}}"
                             StyleClass="FilledButton"
@@ -63,7 +63,7 @@
                             Margin="0,20,0,0">
                         <Button.Triggers>
                             <DataTrigger TargetType="Button" Binding="{Binding IsLoading}" Value="True">
-                                <Setter Property="Text" Value="Signing in..." />
+                                <Setter Property="Text" Value="Đang đăng nhập..." />
                             </DataTrigger>
                         </Button.Triggers>
                     </Button>
@@ -72,9 +72,9 @@
 
                 <!-- Register Link -->
                 <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Margin="0,20,0,0">
-                    <Label Text="Don't have an account?" 
+                    <Label Text="Chưa có tài khoản?" 
                            TextColor="{AppThemeBinding Light={StaticResource Gray600}, Dark={StaticResource Gray300}}" />
-                    <Label Text="Sign up" 
+                    <Label Text="Đăng ký" 
                            TextColor="{StaticResource Primary}" 
                            FontAttributes="Bold"
                            Margin="5,0,0,0">

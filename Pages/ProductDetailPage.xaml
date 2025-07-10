@@ -26,7 +26,7 @@
             <StackLayout Padding="20" Spacing="15">
                 
                 <!-- Product Name -->
-                <Label Text="{Binding Product.Name, FallbackValue='Loading Product Name...'}"
+                <Label Text="{Binding Product.Name, FallbackValue='Đang tải tên sản phẩm...'}"
                        FontSize="24"
                        FontAttributes="Bold"
                        TextColor="{AppThemeBinding Light=Black, Dark=White}" />
@@ -38,7 +38,7 @@
                        TextColor="{StaticResource Primary}" />
 
                 <!-- Description -->
-                <Label Text="{Binding Product.Description, FallbackValue='No description available'}"
+                <Label Text="{Binding Product.Description, FallbackValue='Không có mô tả nào'}"
                        FontSize="16"
                        TextColor="{AppThemeBinding Light={StaticResource Gray600}, Dark={StaticResource Gray300}}"
                        LineBreakMode="WordWrap" />

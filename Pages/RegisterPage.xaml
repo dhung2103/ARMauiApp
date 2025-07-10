@@ -4,7 +4,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewmodels="clr-namespace:ARMauiApp.ViewModels"
              x:DataType="viewmodels:RegisterViewModel"
-             Title="Register"
+             Title="Đăng ký"
              Shell.NavBarIsVisible="False">
 
     <ScrollView>
@@ -12,12 +12,12 @@
             
             <!-- Header -->
             <StackLayout Margin="0,20,0,30">
-                <Label Text="Create Account" 
+                <Label Text="Tạo tài khoản" 
                        FontSize="28" 
                        FontAttributes="Bold"
                        HorizontalOptions="Center"
                        TextColor="{StaticResource Primary}" />
-                <Label Text="Join us today!" 
+                <Label Text="Tham gia cùng chúng tôi hôm nay!" 
                        FontSize="16" 
                        HorizontalOptions="Center"
                        TextColor="{AppThemeBinding Light={StaticResource Gray600}, Dark={StaticResource Gray300}}" 
@@ -26,9 +26,9 @@
 
             <!-- Username -->
             <StackLayout>
-                <Label Text="Username" FontSize="16" FontAttributes="Bold" />
+                <Label Text="Tên người dùng" FontSize="16" FontAttributes="Bold" />
                 <Entry Text="{Binding Username}"
-                       Placeholder="Enter username"
+                       Placeholder="Nhập tên người dùng"
                        HeightRequest="50" />
             </StackLayout>
 
@@ -37,22 +37,22 @@
                 <Label Text="Email" FontSize="16" FontAttributes="Bold" />
                 <Entry Text="{Binding Email}"
                        Keyboard="Email"
-                       Placeholder="Enter email"
+                       Placeholder="Nhập email"
                        HeightRequest="50" />
             </StackLayout>
 
             <!-- Password -->
             <StackLayout>
-                <Label Text="Password" FontSize="16" FontAttributes="Bold" />
+                <Label Text="Mật khẩu" FontSize="16" FontAttributes="Bold" />
                 <Entry Text="{Binding Password}"
                        IsPassword="True"
-                       Placeholder="Enter password"
+                       Placeholder="Nhập mật khẩu"
                        HeightRequest="50" />
             </StackLayout>
 
             <!-- Gender -->
             <StackLayout>
-                <Label Text="Gender" FontSize="16" FontAttributes="Bold" />
+                <Label Text="Giới tính" FontSize="16" FontAttributes="Bold" />
                 <Picker ItemsSource="{Binding GenderOptions}"
                         SelectedIndex="{Binding SelectedGender}"
                         HeightRequest="50" />
@@ -60,24 +60,24 @@
 
             <!-- Height -->
             <StackLayout>
-                <Label Text="Height (cm)" FontSize="16" FontAttributes="Bold" />
+                <Label Text="Chiều cao (cm)" FontSize="16" FontAttributes="Bold" />
                 <Entry Text="{Binding Height}"
                        Keyboard="Numeric"
-                       Placeholder="Enter height"
+                       Placeholder="Nhập chiều cao"
                        HeightRequest="50" />
             </StackLayout>
 
             <!-- Weight -->
             <StackLayout>
-                <Label Text="Weight (kg)" FontSize="16" FontAttributes="Bold" />
+                <Label Text="Cân nặng (kg)" FontSize="16" FontAttributes="Bold" />
                 <Entry Text="{Binding Weight}"
                        Keyboard="Numeric"
-                       Placeholder="Enter weight"
+                       Placeholder="Nhập cân nặng"
                        HeightRequest="50" />
             </StackLayout>
 
             <!-- Register Button -->
-            <Button Text="Create Account" 
+            <Button Text="Tạo tài khoản" 
                     Command="{Binding RegisterCommand}"
                     IsEnabled="{Binding IsLoading, Converter={StaticResource InvertedBoolConverter}}"
                     BackgroundColor="{StaticResource Primary}"
@@ -95,8 +95,8 @@
 
             <!-- Login Link -->
             <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Margin="0,15,0,0">
-                <Label Text="Already have an account?" />
-                <Label Text="Sign in" 
+                <Label Text="Đã có tài khoản?" />
+                <Label Text="Đăng nhập" 
                        TextColor="{StaticResource Primary}" 
                        FontAttributes="Bold"
                        Margin="5,0,0,0">
