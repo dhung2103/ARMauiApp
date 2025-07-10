@@ -1,5 +1,3 @@
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
 using ARMauiApp.Models;
 using ARMauiApp.Services;
 
@@ -37,7 +35,7 @@ namespace ARMauiApp.ViewModels
             try
             {
                 Product = await _productService.GetProductByIdAsync(ProductId);
-                
+
                 if (Product?.Sizes?.Any() == true)
                 {
                     SelectedSize = Product.Sizes.First();

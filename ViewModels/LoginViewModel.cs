@@ -1,5 +1,3 @@
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
 using ARMauiApp.Models;
 using ARMauiApp.Services;
 using CommunityToolkit.Maui.Alerts;
@@ -26,7 +24,7 @@ namespace ARMauiApp.ViewModels
         public LoginViewModel(AuthService authService)
         {
             _authService = authService;
-            
+
             // Đăng ký commands trong constructor
             LoginCommand = new AsyncRelayCommand(Login);
             NavigateToRegisterCommand = new AsyncRelayCommand(NavigateToRegister);

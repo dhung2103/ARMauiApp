@@ -8,10 +8,10 @@ namespace ARMauiApp.Converters
         {
             if (value is int count)
                 return count > 0;
-            
+
             if (value is System.Collections.ICollection collection)
                 return collection.Count > 0;
-                
+
             return false;
         }
 

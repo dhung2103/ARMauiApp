@@ -82,11 +82,11 @@ namespace ARMauiApp.Services
         {
             // Simulate API call
             await Task.Delay(500);
-            
+
             if (string.IsNullOrWhiteSpace(query))
                 return _products;
 
-            return _products.Where(p => 
+            return _products.Where(p =>
                 p.Name.Contains(query, StringComparison.OrdinalIgnoreCase) ||
                 p.Description.Contains(query, StringComparison.OrdinalIgnoreCase)
             ).ToList();

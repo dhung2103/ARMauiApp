@@ -8,7 +8,7 @@ namespace ARMauiApp.Services
         {
             // Simulate API call
             await Task.Delay(1000);
-            
+
             // Mock authentication - in real app, call your API
             return loginDto.Email == "test@example.com" && loginDto.Password == "123456";
         }
@@ -17,7 +17,7 @@ namespace ARMauiApp.Services
         {
             // Simulate API call
             await Task.Delay(1000);
-            
+
             // Mock registration - in real app, call your API
             return !string.IsNullOrEmpty(registerDto.Email) && !string.IsNullOrEmpty(registerDto.Password);
         }

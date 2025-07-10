@@ -1,8 +1,5 @@
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
 using ARMauiApp.Models;
 using ARMauiApp.Services;
-using System.Collections.ObjectModel;
 using System.Windows.Input;
 
 namespace ARMauiApp.ViewModels
@@ -31,7 +28,7 @@ namespace ARMauiApp.ViewModels
         public ProductListViewModel(ProductService productService)
         {
             _productService = productService;
-            
+
             // Đăng ký commands trong constructor
             LoadProductsCommand = new AsyncRelayCommand(LoadProducts);
             RefreshProductsCommand = new AsyncRelayCommand(RefreshProducts);
@@ -49,7 +46,7 @@ namespace ARMauiApp.ViewModels
             {
                 var productList = await _productService.GetProductsAsync();
                 Products.Clear();
-                
+
                 foreach (var product in productList)
                 {
                     Products.Add(product);
@@ -83,7 +80,7 @@ namespace ARMauiApp.ViewModels
             {
                 var productList = await _productService.SearchProductsAsync(SearchText);
                 Products.Clear();
-                
+
                 foreach (var product in productList)
                 {
                     Products.Add(product);
