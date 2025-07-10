@@ -70,12 +70,12 @@ namespace ARMauiApp.ViewModels
         }
 
         [RelayCommand]
-        async Task AddToCart()
+        async Task TryNow()
         {
             if (Product == null) return;
 
-            // Simulate add to cart
-            await Shell.Current.DisplayAlert("Success", $"Added {Product.Name} ({SelectedSize}) to cart!", "OK");
+            // Simulate try now action
+            await Shell.Current.DisplayAlert("Thử ngay", $"Bạn đang thử {Product.Name} ({SelectedSize}). Cảm giác thế nào?", "Tuyệt vời!");
         }
 
         partial void OnProductIdChanged(string value)

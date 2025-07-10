@@ -22,13 +22,13 @@
     <TabBar x:Name="MainTabBar">
         
         <!-- Products Tab -->
-        <ShellContent Title="Products"
+        <ShellContent Title="Sản phẩm"
                       Route="products"
                       ContentTemplate="{DataTemplate pages:ProductListPage}"
                       Icon="shop.svg" />
 
         <!-- Account Tab -->
-        <ShellContent Title="Account"
+        <ShellContent Title="Tài khoản"
                       Route="account"
                       ContentTemplate="{DataTemplate pages:AccountPage}"
                       Icon="user.svg" />

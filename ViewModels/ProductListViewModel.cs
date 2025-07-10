@@ -7,9 +7,16 @@ namespace ARMauiApp.ViewModels
     public partial class ProductListViewModel : ObservableObject
     {
         private readonly ProductService _productService;
+        private readonly CategoryService _categoryService;
 
         [ObservableProperty]
         private ObservableCollection<ProductDto> products = new();
+
+        [ObservableProperty]
+        private ObservableCollection<CategoryDto> categories = new();
+
+        [ObservableProperty]
+        private CategoryDto? selectedCategory;
 
         [ObservableProperty]
         private string searchText = string.Empty;
@@ -24,16 +31,21 @@ namespace ARMauiApp.ViewModels
         public ICommand RefreshProductsCommand { get; }
         public ICommand SearchProductsCommand { get; }
         public ICommand ViewProductDetailCommand { get; }
+        public ICommand LoadCategoriesCommand { get; }
+        public ICommand FilterByCategoryCommand { get; }
 
-        public ProductListViewModel(ProductService productService)
+        public ProductListViewModel(ProductService productService, CategoryService categoryService)
         {
             _productService = productService;
+            _categoryService = categoryService;
 
             // Đăng ký commands trong constructor
             LoadProductsCommand = new AsyncRelayCommand(LoadProducts);
             RefreshProductsCommand = new AsyncRelayCommand(RefreshProducts);
             SearchProductsCommand = new AsyncRelayCommand(SearchProducts);
             ViewProductDetailCommand = new AsyncRelayCommand<ProductDto?>(ViewProductDetail);
+            LoadCategoriesCommand = new AsyncRelayCommand(LoadCategories);
+            FilterByCategoryCommand = new AsyncRelayCommand<CategoryDto?>(FilterByCategory);
         }
 
         private async Task LoadProducts()
@@ -110,7 +122,72 @@ namespace ARMauiApp.ViewModels
 
         public async Task Initialize()
         {
+            await LoadCategories();
             await LoadProducts();
+        }
+
+        private async Task LoadCategories()
+        {
+            try
+            {
+                var categoryList = await _categoryService.GetCategoriesAsync();
+                Categories.Clear();
+                
+                // Add "All Categories" option
+                Categories.Add(new CategoryDto { Id = "", Name = "Tất cả danh mục", Description = "Hiển thị tất cả sản phẩm" });
+                
+                foreach (var category in categoryList)
+                {
+                    Categories.Add(category);
+                }
+                
+                // Set default selection to "All Categories"
+                SelectedCategory = Categories.FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert("Error", $"Failed to load categories: {ex.Message}", "OK");
+            }
+        }
+
+        private async Task FilterByCategory(CategoryDto? category)
+        {
+            if (category == null) return;
+
+            SelectedCategory = category;
+
+            if (IsLoading) return;
+            IsLoading = true;
+
+            try
+            {
+                List<ProductDto> productList;
+                
+                if (string.IsNullOrEmpty(category.Id))
+                {
+                    // Show all products
+                    productList = await _productService.GetProductsAsync();
+                }
+                else
+                {
+                    // Filter by category
+                    productList = await _productService.GetProductsByCategoryAsync(category.Id);
+                }
+
+                Products.Clear();
+                foreach (var product in productList)
+                {
+                    Products.Add(product);
+                }
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert("Error", $"Failed to filter products: {ex.Message}", "OK");
+            }
+            finally
+            {
+                IsLoading = false;
+            }
         }
     }
 }
