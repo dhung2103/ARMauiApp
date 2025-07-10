@@ -27,6 +27,7 @@ public static class MauiProgram
         // Register Services
         builder.Services.AddSingleton<AuthService>();
         builder.Services.AddSingleton<ProductService>();
+        builder.Services.AddSingleton<CategoryService>();
 
         // Register Converters
         builder.Services.AddSingleton<CountToBoolConverter>();

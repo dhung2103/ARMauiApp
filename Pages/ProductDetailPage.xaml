@@ -72,7 +72,7 @@
                                FontAttributes="Bold"
                                TextColor="{AppThemeBinding Light={StaticResource Gray600}, Dark={StaticResource Gray300}}" />
                         <Label Grid.Row="0" Grid.Column="1"
-                               Text="{Binding Product.CategoryId}"
+                               Text="{Binding CategoryName, FallbackValue='Đang tải...'}"
                                TextColor="{AppThemeBinding Light=Black, Dark=White}" />
                         
                         <Label Grid.Row="1" Grid.Column="0"

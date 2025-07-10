@@ -7,6 +7,7 @@ namespace ARMauiApp.ViewModels
     public partial class ProductDetailViewModel : ObservableObject
     {
         private readonly ProductService _productService;
+        private readonly CategoryService _categoryService;
 
         [ObservableProperty]
         private string productId = string.Empty;
@@ -20,9 +21,13 @@ namespace ARMauiApp.ViewModels
         [ObservableProperty]
         private string selectedSize = string.Empty;
 
-        public ProductDetailViewModel(ProductService productService)
+        [ObservableProperty]
+        private string categoryName = string.Empty;
+
+        public ProductDetailViewModel(ProductService productService, CategoryService categoryService)
         {
             _productService = productService;
+            _categoryService = categoryService;
         }
 
         [RelayCommand]
@@ -39,6 +44,13 @@ namespace ARMauiApp.ViewModels
                 if (Product?.Sizes?.Any() == true)
                 {
                     SelectedSize = Product.Sizes.First();
+                }
+
+                // Load category name
+                if (Product != null && !string.IsNullOrEmpty(Product.CategoryId))
+                {
+                    var category = await _categoryService.GetCategoryByIdAsync(Product.CategoryId);
+                    CategoryName = category?.Name ?? Product.CategoryId;
                 }
             }
             catch (Exception ex)
