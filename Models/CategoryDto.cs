@@ -1,6 +1,6 @@
 namespace ARMauiApp.Models
 {
-    public class CategoryDto
+    public partial class CategoryDto : ObservableObject
     {
         public string Id { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
@@ -8,5 +8,8 @@ namespace ARMauiApp.Models
         public string? ParentCategoryId { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
+
+        [ObservableProperty]
+        private bool isSelected;
     }
 }

@@ -134,7 +134,7 @@ namespace ARMauiApp.ViewModels
                 Categories.Clear();
 
                 // Add "All Categories" option
-                Categories.Add(new CategoryDto { Id = "", Name = "Tất cả danh mục", Description = "Hiển thị tất cả sản phẩm" });
+                Categories.Add(new CategoryDto { Id = "", Name = "Tất cả", Description = "Hiển thị tất cả sản phẩm" });
 
                 foreach (var category in categoryList)
                 {
@@ -148,6 +148,12 @@ namespace ARMauiApp.ViewModels
             {
                 await Shell.Current.DisplayAlert("Lỗi", $"Không thể tải danh mục: {ex.Message}", "OK");
             }
+        }
+
+        partial void OnSelectedCategoryChanged(CategoryDto? oldValue, CategoryDto? newValue)
+        {
+            if (oldValue != null) oldValue.IsSelected = false;
+            if (newValue != null) newValue.IsSelected = true;
         }
 
         private async Task FilterByCategory(CategoryDto? category)
