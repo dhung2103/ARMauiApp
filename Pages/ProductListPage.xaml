@@ -12,16 +12,21 @@
         
         <!-- Search Section với gradient background -->
         <Frame Grid.Row="0" 
-               BackgroundColor="{StaticResource Primary}"
+               BackgroundColor="{StaticResource White}"
                CornerRadius="0"
                Padding="0"
                HasShadow="True">
             <StackLayout Padding="20,15,20,20">
-                <Label Text="Khám phá thời trang"
+                <Image Source="fashion_banner.svg"
+                       HeightRequest="50"
+                       Aspect="AspectFit"
+                       HorizontalOptions="Center"
+                       Margin="0,0,0,10" />
+                <!--<Label Text="Khám phá thời trang"
                        FontSize="24"
                        FontAttributes="Bold"
                        TextColor="White"
-                       Margin="0,0,0,15" />
+                       Margin="0,0,0,15" />-->
                 <Frame BackgroundColor="White"
                        CornerRadius="25"
                        Padding="0"
