@@ -1,3 +1,5 @@
+using CommunityToolkit.Mvvm.ComponentModel;
+
 namespace ARMauiApp.Models
 {
     public partial class CategoryDto : ObservableObject

@@ -6,13 +6,18 @@ namespace ARMauiApp.Converters
     {
         public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
+            bool hasItems = false;
+            
             if (value is int count)
-                return count > 0;
+                hasItems = count > 0;
+            else if (value is System.Collections.ICollection collection)
+                hasItems = collection.Count > 0;
 
-            if (value is System.Collections.ICollection collection)
-                return collection.Count > 0;
-
-            return false;
+            // If parameter is "True", invert the result (for showing placeholder when no items)
+            if (parameter?.ToString()?.ToLower() == "true")
+                return !hasItems;
+                
+            return hasItems;
         }
 
         public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
@@ -63,6 +68,66 @@ namespace ARMauiApp.Converters
         }
 
         public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class StringToBoolConverter : IValueConverter
+    {
+        public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+        {
+            bool hasValue = false;
+            
+            if (value is string stringValue)
+                hasValue = !string.IsNullOrEmpty(stringValue);
+
+            // If parameter is "True", invert the result
+            if (parameter?.ToString()?.ToLower() == "true")
+                return !hasValue;
+                
+            return hasValue;
+        }
+
+        public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class AllTrueMultiConverter : IMultiValueConverter
+    {
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        {
+            // Returns true only if ALL values are true
+            foreach (var value in values)
+            {
+                if (value is bool boolValue && !boolValue)
+                    return false;
+            }
+            return true;
+        }
+
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class AllFalseMultiConverter : IMultiValueConverter
+    {
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        {
+            // Returns true only if ALL values are false
+            foreach (var value in values)
+            {
+                if (value is bool boolValue && boolValue)
+                    return false;
+            }
+            return true;
+        }
+
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
         }

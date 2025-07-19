@@ -2,6 +2,7 @@ using ARMauiApp.Converters;
 using ARMauiApp.Pages;
 using ARMauiApp.Services;
 using ARMauiApp.ViewModels;
+using ARMauiApp.Configuration;
 using CommunityToolkit.Maui;
 using UraniumUI;
 
@@ -28,6 +29,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<AuthService>();
         builder.Services.AddSingleton<ProductService>();
         builder.Services.AddSingleton<CategoryService>();
+        builder.Services.AddSingleton<ApiHealthService>();
 
         // Register Converters
         builder.Services.AddSingleton<CountToBoolConverter>();

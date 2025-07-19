@@ -10,16 +10,45 @@
         <ScrollView>
             <StackLayout Spacing="0">
             
-            <!-- Product Image -->
+            <!-- Product Images Carousel -->
             <Frame HeightRequest="300"
                    Padding="0"
                    CornerRadius="0"
                    HasShadow="False"
                    BackgroundColor="{AppThemeBinding Light={StaticResource Gray100}, Dark={StaticResource Gray800}}">
-                <Label Text="�"
-                       FontSize="120"
-                       VerticalOptions="Center"
-                       HorizontalOptions="Center" />
+                
+                <!-- Display images if available, otherwise show placeholder -->
+                <Grid>
+                    <!-- Image Carousel -->
+                    <CarouselView ItemsSource="{Binding Product.Images}"
+                                  HeightRequest="300"
+                                  IndicatorView="indicatorView"
+                                  IsVisible="{Binding Product.Images.Count, Converter={StaticResource CountToBoolConverter}}">
+                        <CarouselView.ItemTemplate>
+                            <DataTemplate>
+                                <Image Source="{Binding .}"
+                                       Aspect="AspectFill"
+                                       HeightRequest="300" />
+                            </DataTemplate>
+                        </CarouselView.ItemTemplate>
+                    </CarouselView>
+                    
+                    <!-- Image Indicators -->
+                    <IndicatorView x:Name="indicatorView"
+                                   VerticalOptions="End"
+                                   HorizontalOptions="Center"
+                                   Margin="0,0,0,20"
+                                   IndicatorColor="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource Gray600}}"
+                                   SelectedIndicatorColor="{StaticResource Primary}"
+                                   IsVisible="{Binding Product.Images.Count, Converter={StaticResource CountToBoolConverter}}" />
+                    
+                    <!-- Placeholder when no images -->
+                    <Label Text="📷"
+                           FontSize="120"
+                           VerticalOptions="Center"
+                           HorizontalOptions="Center"
+                           IsVisible="{Binding Product.Images.Count, Converter={StaticResource CountToBoolConverter}, ConverterParameter=True}" />
+                </Grid>
             </Frame>
 
             <!-- Product Info -->

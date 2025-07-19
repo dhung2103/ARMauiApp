@@ -18,6 +18,9 @@
             <local:InvertedBoolConverter x:Key="InvertedBoolConverter" />
             <local:BoolToActiveStatusConverter x:Key="BoolToActiveStatusConverter" />
             <local:BoolToStatusColorConverter x:Key="BoolToStatusColorConverter" />
+            <local:StringToBoolConverter x:Key="StringToBoolConverter" />
+            <local:AllFalseMultiConverter x:Key="AllFalseMultiConverter" />
+            <local:AllTrueMultiConverter x:Key="AllTrueMultiConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>
