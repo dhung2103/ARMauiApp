@@ -192,9 +192,9 @@
                                             </Image>
 
                                             <!-- Fallback to Model3D URL if no Images -->
-                                            <Image Source="{Binding Model3DUrl}"
+                                            <!--<Image Source="{Binding Model3DUrl}"
                                                    Aspect="AspectFill"
-                                                   IsVisible="{Binding Images.Count, Converter={StaticResource CountToBoolConverter}, ConverterParameter=True}" />
+                                                   IsVisible="{Binding Images.Count, Converter={StaticResource CountToBoolConverter}, ConverterParameter=True}" />-->
 
                                             <!-- Final fallback placeholder when no images (Model3DUrl will be tried by Image above) -->
                                             <Label Text="👕"
