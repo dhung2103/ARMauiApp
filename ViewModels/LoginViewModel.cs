@@ -8,12 +8,13 @@ namespace ARMauiApp.ViewModels
     public partial class LoginViewModel : ObservableObject
     {
         private readonly AuthService _authService;
+        private readonly TokenService _tokenService;
 
         [ObservableProperty]
-        private string email = "test@example.com";
+        private string email = string.Empty;
 
         [ObservableProperty]
-        private string password = "123456";
+        private string password = string.Empty;
 
         [ObservableProperty]
         private bool isLoading = false;
@@ -21,8 +22,10 @@ namespace ARMauiApp.ViewModels
         public ICommand LoginCommand { get; }
         public ICommand NavigateToRegisterCommand { get; }
 
-        public LoginViewModel(AuthService authService)
+        public LoginViewModel(TokenService tokenService, AuthService authService)
         {
+            // Initialize services (in a real app, use dependency injection)
+            _tokenService = tokenService;
             _authService = authService;
 
             // Đăng ký commands trong constructor
@@ -48,11 +51,15 @@ namespace ARMauiApp.ViewModels
                     Password = Password
                 };
 
-                var success = await _authService.LoginAsync(loginDto);
+                var (success, user) = await _authService.LoginAsync(loginDto);
 
                 if (success)
                 {
-                    await Toast.Make("Đăng nhập thành công!").Show();
+                    var message = user != null
+                        ? $"Chào mừng {user.Username}!"
+                        : "Đăng nhập thành công!";
+
+                    await Toast.Make(message).Show();
                     // Navigate to main page
                     await Shell.Current.GoToAsync("//products");
                 }

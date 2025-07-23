@@ -15,6 +15,9 @@ namespace ARMauiApp.ViewModels
         private string email = string.Empty;
 
         [ObservableProperty]
+        private DateTime birthday = DateTime.Today.AddYears(-20);
+
+        [ObservableProperty]
         private string password = string.Empty;
 
         [ObservableProperty]
@@ -31,6 +34,8 @@ namespace ARMauiApp.ViewModels
 
         public List<string> GenderOptions { get; } = new() { "Nam", "Nữ", "Khác" };
 
+        public DateTime MaxBirthday { get; } = DateTime.Today.AddYears(-13); // Minimum age 13
+
         public RegisterViewModel(AuthService authService)
         {
             _authService = authService;
@@ -39,17 +44,8 @@ namespace ARMauiApp.ViewModels
         [RelayCommand]
         async Task Register()
         {
-            if (string.IsNullOrWhiteSpace(Username) || string.IsNullOrWhiteSpace(Email) || string.IsNullOrWhiteSpace(Password))
-            {
-                await Toast.Make("Vui lòng điền đầy đủ các trường bắt buộc").Show();
+            if (!ValidateInput())
                 return;
-            }
-
-            if (Password.Length < 6)
-            {
-                await Toast.Make("Mật khẩu phải có ít nhất 6 ký tự").Show();
-                return;
-            }
 
             IsLoading = true;
 
@@ -59,11 +55,12 @@ namespace ARMauiApp.ViewModels
                 {
                     Username = Username,
                     Email = Email,
+                    Birthday = DateOnly.FromDateTime(Birthday),
                     Password = Password,
                     Gender = SelectedGender,
                     Height = Height,
                     Weight = Weight,
-                    RoleId = "user"
+                    RoleId = "661fcf75e40000551e02a002"  // Default user role
                 };
 
                 var success = await _authService.RegisterAsync(registerDto);
@@ -75,16 +72,85 @@ namespace ARMauiApp.ViewModels
                 }
                 else
                 {
-                    await Toast.Make("Đăng ký thất bại. Vui lòng thử lại.").Show();
+                    await Toast.Make("Đăng ký thất bại. Email có thể đã được sử dụng.").Show();
                 }
             }
             catch (Exception ex)
             {
-                await Toast.Make($"Đăng ký thất bại: {ex.Message}").Show();
+                await Toast.Make($"Lỗi kết nối: {ex.Message}").Show();
             }
             finally
             {
                 IsLoading = false;
+            }
+        }
+
+        private bool ValidateInput()
+        {
+            if (string.IsNullOrWhiteSpace(Username))
+            {
+                Toast.Make("Vui lòng nhập tên người dùng").Show();
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(Email))
+            {
+                Toast.Make("Vui lòng nhập email").Show();
+                return false;
+            }
+
+            if (!IsValidEmail(Email))
+            {
+                Toast.Make("Email không hợp lệ").Show();
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(Password))
+            {
+                Toast.Make("Vui lòng nhập mật khẩu").Show();
+                return false;
+            }
+
+            if (Password.Length < 6)
+            {
+                Toast.Make("Mật khẩu phải có ít nhất 6 ký tự").Show();
+                return false;
+            }
+
+            var age = DateTime.Today.Year - Birthday.Year;
+            if (Birthday.Date > DateTime.Today.AddYears(-age)) age--;
+
+            if (age < 13)
+            {
+                Toast.Make("Bạn phải từ 13 tuổi trở lên để đăng ký").Show();
+                return false;
+            }
+
+            if (Height < 50 || Height > 300)
+            {
+                Toast.Make("Chiều cao phải từ 50-300cm").Show();
+                return false;
+            }
+
+            if (Weight < 20 || Weight > 500)
+            {
+                Toast.Make("Cân nặng phải từ 20-500kg").Show();
+                return false;
+            }
+
+            return true;
+        }
+
+        private bool IsValidEmail(string email)
+        {
+            try
+            {
+                var addr = new System.Net.Mail.MailAddress(email);
+                return addr.Address == email;
+            }
+            catch
+            {
+                return false;
             }
         }
 

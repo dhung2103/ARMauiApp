@@ -1,5 +1,8 @@
 using ARMauiApp.Models;
 using ARMauiApp.Services;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using System.Collections.ObjectModel;
 using System.Windows.Input;
 
 namespace ARMauiApp.ViewModels
@@ -56,7 +59,8 @@ namespace ARMauiApp.ViewModels
 
             try
             {
-                var productList = await _productService.GetProductsAsync();
+                var categoryId = SelectedCategory?.Id ?? "";
+                var productList = await _productService.GetProductsAsync(categoryId, SearchText);
                 Products.Clear();
 
                 foreach (var product in productList)
@@ -84,27 +88,11 @@ namespace ARMauiApp.ViewModels
 
         private async Task SearchProducts()
         {
-            if (IsLoading) return;
-
-            IsLoading = true;
-
-            try
+            // Reset category selection when searching
+            if (!string.IsNullOrWhiteSpace(SearchText))
             {
-                var productList = await _productService.SearchProductsAsync(SearchText);
-                Products.Clear();
-
-                foreach (var product in productList)
-                {
-                    Products.Add(product);
-                }
-            }
-            catch (Exception ex)
-            {
-                await Shell.Current.DisplayAlert("Lỗi", $"Tìm kiếm thất bại: {ex.Message}", "OK");
-            }
-            finally
-            {
-                IsLoading = false;
+                await LoadProducts();
+                //SelectedCategory = Categories.FirstOrDefault(); // Set to "All Categories"
             }
         }
 
@@ -150,50 +138,25 @@ namespace ARMauiApp.ViewModels
             }
         }
 
-        partial void OnSelectedCategoryChanged(CategoryDto? oldValue, CategoryDto? newValue)
-        {
-            if (oldValue != null) oldValue.IsSelected = false;
-            if (newValue != null) newValue.IsSelected = true;
-        }
-
         private async Task FilterByCategory(CategoryDto? category)
         {
             if (category == null) return;
-
             SelectedCategory = category;
+            await LoadProducts();
+        }
 
-            if (IsLoading) return;
-            IsLoading = true;
-
-            try
+        // This method is called automatically when SearchText changes
+        partial void OnSearchTextChanged(string value)
+        {
+            // Debounce search to avoid too many API calls
+            _ = Task.Run(async () =>
             {
-                List<ProductDto> productList;
-
-                if (string.IsNullOrEmpty(category.Id))
+                await Task.Delay(500); // Wait 500ms
+                if (SearchText == value) // Check if search text hasn't changed
                 {
-                    // Show all products
-                    productList = await _productService.GetProductsAsync();
+                    await MainThread.InvokeOnMainThreadAsync(async () => await SearchProducts());
                 }
-                else
-                {
-                    // Filter by category
-                    productList = await _productService.GetProductsByCategoryAsync(category.Id);
-                }
-
-                Products.Clear();
-                foreach (var product in productList)
-                {
-                    Products.Add(product);
-                }
-            }
-            catch (Exception ex)
-            {
-                await Shell.Current.DisplayAlert("Lỗi", $"Không thể lọc sản phẩm: {ex.Message}", "OK");
-            }
-            finally
-            {
-                IsLoading = false;
-            }
+            });
         }
     }
 }

@@ -1,22 +1,39 @@
+using ARMauiApp.ViewModels;
 using CommunityToolkit.Maui.Alerts;
 
 namespace ARMauiApp.Pages;
 
 public partial class AccountPage : ContentPage
 {
-    public AccountPage()
+    private readonly AccountViewModel _viewModel;
+
+    public AccountPage(AccountViewModel accountViewModel)
     {
         InitializeComponent();
+        _viewModel = accountViewModel;
+        BindingContext = accountViewModel;
+    }
+
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+        if (_viewModel.LoadUserCommand.CanExecute(null))
+        {
+            _viewModel.LoadUserCommand.Execute(null);
+        }
     }
 
     private async void OnEditProfileTapped(object sender, EventArgs e)
     {
-        await DisplayAlert("Chỉnh sửa hồ sơ", "Tính năng này sẽ được triển khai sớm.", "OK");
+        await Shell.Current.GoToAsync("editprofile");
     }
 
-    private async void OnChangePasswordTapped(object sender, EventArgs e)
+    private void OnChangePasswordTapped(object sender, EventArgs e)
     {
-        await DisplayAlert("Đổi mật khẩu", "Tính năng này sẽ được triển khai sớm.", "OK");
+        if (_viewModel.ChangePasswordCommand.CanExecute(null))
+        {
+            _viewModel.ChangePasswordCommand.Execute(null);
+        }
     }
 
     private async void OnSettingsTapped(object sender, EventArgs e)
@@ -32,10 +49,9 @@ public partial class AccountPage : ContentPage
     private async void OnLogoutClicked(object sender, EventArgs e)
     {
         var result = await DisplayAlert("Đăng xuất", "Bạn có chắc chắn muốn đăng xuất không?", "Có", "Không");
-        if (result)
+        if (result && _viewModel.LogoutCommand.CanExecute(null))
         {
-            await Toast.Make("Đăng xuất thành công").Show();
-            await Shell.Current.GoToAsync("//login");
+            _viewModel.LogoutCommand.Execute(null);
         }
     }
 }

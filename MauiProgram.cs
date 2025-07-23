@@ -2,7 +2,6 @@ using ARMauiApp.Converters;
 using ARMauiApp.Pages;
 using ARMauiApp.Services;
 using ARMauiApp.ViewModels;
-using ARMauiApp.Configuration;
 using CommunityToolkit.Maui;
 using UraniumUI;
 
@@ -27,9 +26,10 @@ public static class MauiProgram
 
         // Register Services
         builder.Services.AddSingleton<AuthService>();
+        builder.Services.AddSingleton<UserService>();
         builder.Services.AddSingleton<ProductService>();
         builder.Services.AddSingleton<CategoryService>();
-        builder.Services.AddSingleton<ApiHealthService>();
+        builder.Services.AddSingleton<TokenService>();
 
         // Register Converters
         builder.Services.AddSingleton<CountToBoolConverter>();
@@ -42,13 +42,16 @@ public static class MauiProgram
         builder.Services.AddTransient<RegisterViewModel>();
         builder.Services.AddTransient<ProductListViewModel>();
         builder.Services.AddTransient<ProductDetailViewModel>();
+        builder.Services.AddTransient<AccountViewModel>();
 
         // Register Pages
+        builder.Services.AddTransient<SplashPage>();
         builder.Services.AddTransient<LoginPage>();
         builder.Services.AddTransient<RegisterPage>();
         builder.Services.AddTransient<ProductListPage>();
         builder.Services.AddTransient<ProductDetailPage>();
         builder.Services.AddTransient<AccountPage>();
+        builder.Services.AddTransient<EditProfilePage>();
 
 #if DEBUG
         builder.Logging.AddDebug();

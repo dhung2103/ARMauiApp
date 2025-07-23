@@ -6,7 +6,7 @@
 
     <ScrollView>
         <StackLayout Padding="20" Spacing="20">
-            
+
             <!-- Profile Header -->
             <Frame BackgroundColor="{StaticResource Primary}"
                    HasShadow="True"
@@ -26,11 +26,11 @@
                                TextColor="{StaticResource Primary}" />
                     </Frame>
                     <StackLayout VerticalOptions="Center" Spacing="5">
-                        <Label Text="Người dùng Demo"
+                        <Label Text="{Binding CurrentUser.Username, FallbackValue='Đang tải...'}"
                                FontSize="20"
                                FontAttributes="Bold"
                                TextColor="White" />
-                        <Label Text="test@example.com"
+                        <Label Text="{Binding CurrentUser.Email, FallbackValue='Đang tải...'}"
                                FontSize="14"
                                TextColor="White"
                                Opacity="0.8" />
@@ -40,14 +40,14 @@
 
             <!-- Menu Items -->
             <StackLayout Spacing="10">
-                
+
                 <!-- Profile Settings -->
                 <Frame BackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Gray800}}"
                        HasShadow="True"
                        CornerRadius="10"
                        Padding="0">
                     <StackLayout>
-                        
+
                         <Grid Padding="15" ColumnDefinitions="Auto, *, Auto">
                             <Label Grid.Column="0"
                                    Text="✏️"
@@ -66,9 +66,9 @@
                                 <TapGestureRecognizer Tapped="OnEditProfileTapped" />
                             </Grid.GestureRecognizers>
                         </Grid>
-                        
+
                         <BoxView HeightRequest="1" BackgroundColor="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray600}}" />
-                        
+
                         <Grid Padding="15" ColumnDefinitions="Auto, *, Auto">
                             <Label Grid.Column="0"
                                    Text="🔑"
@@ -87,7 +87,7 @@
                                 <TapGestureRecognizer Tapped="OnChangePasswordTapped" />
                             </Grid.GestureRecognizers>
                         </Grid>
-                        
+
                     </StackLayout>
                 </Frame>
 
@@ -97,7 +97,7 @@
                        CornerRadius="10"
                        Padding="0">
                     <StackLayout>
-                        
+
                         <Grid Padding="15" ColumnDefinitions="Auto, *, Auto">
                             <Label Grid.Column="0"
                                    Text="⚙️"
@@ -116,9 +116,9 @@
                                 <TapGestureRecognizer Tapped="OnSettingsTapped" />
                             </Grid.GestureRecognizers>
                         </Grid>
-                        
+
                         <BoxView HeightRequest="1" BackgroundColor="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray600}}" />
-                        
+
                         <Grid Padding="15" ColumnDefinitions="Auto, *, Auto">
                             <Label Grid.Column="0"
                                    Text="❓"
@@ -137,7 +137,7 @@
                                 <TapGestureRecognizer Tapped="OnHelpTapped" />
                             </Grid.GestureRecognizers>
                         </Grid>
-                        
+
                     </StackLayout>
                 </Frame>
 

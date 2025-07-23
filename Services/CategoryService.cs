@@ -1,10 +1,14 @@
-using ARMauiApp.Models;
 using ARMauiApp.Configuration;
+using ARMauiApp.Models;
 
 namespace ARMauiApp.Services
 {
     public class CategoryService : BaseApiService
     {
+        public CategoryService(TokenService tokenService) : base(tokenService)
+        {
+        }
+
         public async Task<List<CategoryDto>> GetCategoriesAsync()
         {
             return await GetListAsync<CategoryDto>(ApiConfig.Endpoints.Categories);

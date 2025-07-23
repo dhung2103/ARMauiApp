@@ -86,7 +86,7 @@
                 </StackLayout>
 
                 <!-- Product Details Grid -->
-                <Frame BackgroundColor="{AppThemeBinding Light={StaticResource Gray50}, Dark={StaticResource Gray800}}"
+                <Frame BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Gray800}}"
                        HasShadow="False"
                        CornerRadius="8"
                        Padding="15">

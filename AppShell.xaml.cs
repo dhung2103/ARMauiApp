@@ -10,5 +10,7 @@ public partial class AppShell : Shell
 
         // Register routes for navigation
         Routing.RegisterRoute("productdetail", typeof(ProductDetailPage));
+        Routing.RegisterRoute(nameof(ChangePasswordPage), typeof(ChangePasswordPage));
+        Routing.RegisterRoute("editprofile", typeof(EditProfilePage));
     }
 }

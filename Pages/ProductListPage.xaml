@@ -8,7 +8,7 @@
              x:Name="ProductsPage"
              Title="">
 
-    <Grid RowDefinitions="Auto, Auto, *" BackgroundColor="{AppThemeBinding Light={StaticResource Gray50}, Dark={StaticResource Gray900}}">
+    <Grid RowDefinitions="Auto, Auto, *" BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Gray900}}">
 
         <!-- Search Section với gradient background -->
         <Frame Grid.Row="0" 
@@ -128,7 +128,7 @@
         <RefreshView Grid.Row="2"
                      IsRefreshing="{Binding IsRefreshing}"
                      Command="{Binding RefreshProductsCommand}"
-                     BackgroundColor="{AppThemeBinding Light={StaticResource Gray50}, Dark={StaticResource Gray900}}"
+                     BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Gray900}}"
                      Margin="10,5">
 
             <CollectionView ItemsSource="{Binding Products}"

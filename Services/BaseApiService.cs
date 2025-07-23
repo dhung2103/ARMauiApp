@@ -1,6 +1,5 @@
 using ARMauiApp.Configuration;
 using ARMauiApp.Models;
-using System.Net.Http;
 using System.Text.Json;
 
 namespace ARMauiApp.Services
@@ -9,9 +8,11 @@ namespace ARMauiApp.Services
     {
         protected readonly HttpClient _httpClient;
         protected readonly JsonSerializerOptions _jsonOptions;
+        protected readonly TokenService _tokenService;
 
-        protected BaseApiService()
+        protected BaseApiService(TokenService tokenService)
         {
+            _tokenService = tokenService;
             _httpClient = new HttpClient
             {
                 BaseAddress = new Uri(ApiConfig.BaseUrl),
@@ -27,27 +28,54 @@ namespace ARMauiApp.Services
                 PropertyNameCaseInsensitive = true,
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
                 DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull,
-                Converters = { 
+                Converters = {
                     new System.Text.Json.Serialization.JsonStringEnumConverter(JsonNamingPolicy.CamelCase)
                 }
             };
+        }
+
+        private async Task<HttpRequestMessage> CreateRequestAsync(HttpMethod method, string endpoint, object? data = null)
+        {
+            var request = new HttpRequestMessage(method, endpoint);
+
+            // Add authorization token
+            var token = await _tokenService.GetTokenAsync();
+            if (!string.IsNullOrEmpty(token))
+            {
+                request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+            }
+
+            // Add content for POST/PUT requests
+            if (data != null && (method == HttpMethod.Post || method == HttpMethod.Put))
+            {
+                var json = JsonSerializer.Serialize(data, _jsonOptions);
+                request.Content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
+            }
+
+            return request;
+        }
+
+        private async Task<ApiResponse<T>?> SendRequestAsync<T>(HttpRequestMessage request)
+        {
+            var response = await _httpClient.SendAsync(request);
+            response.EnsureSuccessStatusCode();
+
+            var content = await response.Content.ReadAsStringAsync();
+            return JsonSerializer.Deserialize<ApiResponse<T>>(content, _jsonOptions);
         }
 
         protected async Task<T?> GetAsync<T>(string endpoint) where T : class
         {
             try
             {
-                var response = await _httpClient.GetAsync(endpoint);
-                response.EnsureSuccessStatusCode();
+                using var request = await CreateRequestAsync(HttpMethod.Get, endpoint);
+                var apiResponse = await SendRequestAsync<T>(request);
 
-                var content = await response.Content.ReadAsStringAsync();
-                var apiResponse = JsonSerializer.Deserialize<ApiResponse<T>>(content, _jsonOptions);
-                
                 if (apiResponse?.Success == true)
                 {
                     return apiResponse.Data;
                 }
-                
+
                 System.Diagnostics.Debug.WriteLine($"API Error in GetAsync<{typeof(T).Name}>: {apiResponse?.Message ?? "Unknown error"}");
                 return null;
             }
@@ -67,17 +95,14 @@ namespace ARMauiApp.Services
         {
             try
             {
-                var response = await _httpClient.GetAsync(endpoint);
-                response.EnsureSuccessStatusCode();
+                using var request = await CreateRequestAsync(HttpMethod.Get, endpoint);
+                var apiResponse = await SendRequestAsync<List<T>>(request);
 
-                var content = await response.Content.ReadAsStringAsync();
-                var apiResponse = JsonSerializer.Deserialize<ApiResponse<List<T>>>(content, _jsonOptions);
-                
                 if (apiResponse?.Success == true && apiResponse.Data != null)
                 {
                     return apiResponse.Data;
                 }
-                
+
                 System.Diagnostics.Debug.WriteLine($"API Error in GetListAsync<{typeof(T).Name}>: {apiResponse?.Message ?? "Unknown error"}");
                 return new List<T>();
             }
@@ -97,24 +122,14 @@ namespace ARMauiApp.Services
         {
             try
             {
-                StringContent? content = null;
-                if (data != null)
-                {
-                    var json = JsonSerializer.Serialize(data, _jsonOptions);
-                    content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
-                }
+                using var request = await CreateRequestAsync(HttpMethod.Post, endpoint, data);
+                var apiResponse = await SendRequestAsync<T>(request);
 
-                var response = await _httpClient.PostAsync(endpoint, content);
-                response.EnsureSuccessStatusCode();
-
-                var responseContent = await response.Content.ReadAsStringAsync();
-                var apiResponse = JsonSerializer.Deserialize<ApiResponse<T>>(responseContent, _jsonOptions);
-                
                 if (apiResponse?.Success == true)
                 {
                     return apiResponse.Data;
                 }
-                
+
                 System.Diagnostics.Debug.WriteLine($"API Error in PostAsync<{typeof(T).Name}>: {apiResponse?.Message ?? "Unknown error"}");
                 return null;
             }
@@ -134,24 +149,14 @@ namespace ARMauiApp.Services
         {
             try
             {
-                StringContent? content = null;
-                if (data != null)
-                {
-                    var json = JsonSerializer.Serialize(data, _jsonOptions);
-                    content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
-                }
+                using var request = await CreateRequestAsync(HttpMethod.Post, endpoint, data);
+                var apiResponse = await SendRequestAsync<object>(request);
 
-                var response = await _httpClient.PostAsync(endpoint, content);
-                response.EnsureSuccessStatusCode();
-
-                var responseContent = await response.Content.ReadAsStringAsync();
-                var apiResponse = JsonSerializer.Deserialize<ApiResponse<object>>(responseContent, _jsonOptions);
-                
                 if (apiResponse?.Success == true)
                 {
                     return true;
                 }
-                
+
                 System.Diagnostics.Debug.WriteLine($"API Error in PostAsync: {apiResponse?.Message ?? "Unknown error"}");
                 return false;
             }
@@ -171,24 +176,14 @@ namespace ARMauiApp.Services
         {
             try
             {
-                StringContent? content = null;
-                if (data != null)
-                {
-                    var json = JsonSerializer.Serialize(data, _jsonOptions);
-                    content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
-                }
+                using var request = await CreateRequestAsync(HttpMethod.Put, endpoint, data);
+                var apiResponse = await SendRequestAsync<T>(request);
 
-                var response = await _httpClient.PutAsync(endpoint, content);
-                response.EnsureSuccessStatusCode();
-
-                var responseContent = await response.Content.ReadAsStringAsync();
-                var apiResponse = JsonSerializer.Deserialize<ApiResponse<T>>(responseContent, _jsonOptions);
-                
                 if (apiResponse?.Success == true)
                 {
                     return apiResponse.Data;
                 }
-                
+
                 System.Diagnostics.Debug.WriteLine($"API Error in PutAsync<{typeof(T).Name}>: {apiResponse?.Message ?? "Unknown error"}");
                 return null;
             }
@@ -204,21 +199,45 @@ namespace ARMauiApp.Services
             }
         }
 
-        protected async Task<bool> DeleteAsync(string endpoint)
+        protected async Task<bool> PutAsync(string endpoint, object? data = null)
         {
             try
             {
-                var response = await _httpClient.DeleteAsync(endpoint);
-                response.EnsureSuccessStatusCode();
+                using var request = await CreateRequestAsync(HttpMethod.Put, endpoint, data);
+                var apiResponse = await SendRequestAsync<object>(request);
 
-                var responseContent = await response.Content.ReadAsStringAsync();
-                var apiResponse = JsonSerializer.Deserialize<ApiResponse<object>>(responseContent, _jsonOptions);
-                
                 if (apiResponse?.Success == true)
                 {
                     return true;
                 }
-                
+
+                System.Diagnostics.Debug.WriteLine($"API Error in PutAsync: {apiResponse?.Message ?? "Unknown error"}");
+                return false;
+            }
+            catch (HttpRequestException ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"HTTP Error in PutAsync: {ex.Message}");
+                return false;
+            }
+            catch (JsonException ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"JSON Error in PutAsync: {ex.Message}");
+                return false;
+            }
+        }
+
+        protected async Task<bool> DeleteAsync(string endpoint)
+        {
+            try
+            {
+                using var request = await CreateRequestAsync(HttpMethod.Delete, endpoint);
+                var apiResponse = await SendRequestAsync<object>(request);
+
+                if (apiResponse?.Success == true)
+                {
+                    return true;
+                }
+
                 System.Diagnostics.Debug.WriteLine($"API Error in DeleteAsync: {apiResponse?.Message ?? "Unknown error"}");
                 return false;
             }

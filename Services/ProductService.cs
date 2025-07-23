@@ -1,13 +1,18 @@
-using ARMauiApp.Models;
 using ARMauiApp.Configuration;
+using ARMauiApp.Models;
 
 namespace ARMauiApp.Services
 {
     public class ProductService : BaseApiService
     {
-        public async Task<List<ProductDto>> GetProductsAsync()
+        public ProductService(TokenService tokenService) : base(tokenService)
         {
-            return await GetListAsync<ProductDto>(ApiConfig.Endpoints.Products);
+        }
+
+        public async Task<List<ProductDto>> GetProductsAsync(string categoryId, string productName)
+        {
+            var queryParam = $"?categoryId={Uri.EscapeDataString(categoryId)}&productName={Uri.EscapeDataString(productName)}";
+            return await GetListAsync<ProductDto>(ApiConfig.Endpoints.Products + queryParam);
         }
 
         public async Task<ProductDto?> GetProductByIdAsync(string id)
@@ -40,7 +45,7 @@ namespace ARMauiApp.Services
             // Nếu có categoryId, filter thêm ở client side để đảm bảo
             if (!string.IsNullOrWhiteSpace(categoryId))
             {
-                products = products.Where(p => 
+                products = products.Where(p =>
                     string.Equals(p.CategoryId, categoryId, StringComparison.OrdinalIgnoreCase))
                     .ToList();
             }

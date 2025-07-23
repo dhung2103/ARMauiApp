@@ -7,6 +7,12 @@
     Title="ARMauiApp"
     FlyoutBehavior="Disabled">
 
+    <!-- Splash Screen -->
+    <ShellContent x:Name="SplashShell"
+                  Route="splash"
+                  ContentTemplate="{DataTemplate pages:SplashPage}"
+                  Shell.FlyoutBehavior="Disabled" />
+
     <!-- Authentication Shell -->
     <ShellContent x:Name="LoginShell"
                   Route="login"
@@ -19,7 +25,7 @@
                   Shell.FlyoutBehavior="Disabled" />
 
     <!-- Main App Shell with TabBar -->
-    <TabBar x:Name="MainTabBar">
+    <TabBar x:Name="MainTabBar" Route="main">
         
         <!-- Products Tab -->
         <ShellContent Title="Sản phẩm"

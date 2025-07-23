@@ -7,7 +7,7 @@ namespace ARMauiApp.Converters
         public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
             bool hasItems = false;
-            
+
             if (value is int count)
                 hasItems = count > 0;
             else if (value is System.Collections.ICollection collection)
@@ -16,7 +16,7 @@ namespace ARMauiApp.Converters
             // If parameter is "True", invert the result (for showing placeholder when no items)
             if (parameter?.ToString()?.ToLower() == "true")
                 return !hasItems;
-                
+
             return hasItems;
         }
 
@@ -78,14 +78,14 @@ namespace ARMauiApp.Converters
         public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
             bool hasValue = false;
-            
+
             if (value is string stringValue)
                 hasValue = !string.IsNullOrEmpty(stringValue);
 
             // If parameter is "True", invert the result
             if (parameter?.ToString()?.ToLower() == "true")
                 return !hasValue;
-                
+
             return hasValue;
         }
 
