@@ -1,6 +1,8 @@
 using ARMauiApp.Models;
 using ARMauiApp.Services;
 using CommunityToolkit.Maui.Alerts;
+using System.ComponentModel.DataAnnotations;
+using System.Text.RegularExpressions;
 using System.Windows.Input;
 
 namespace ARMauiApp.ViewModels
@@ -24,20 +26,20 @@ namespace ARMauiApp.ViewModels
 
         public LoginViewModel(TokenService tokenService, AuthService authService)
         {
-            // Initialize services (in a real app, use dependency injection)
             _tokenService = tokenService;
             _authService = authService;
 
-            // Đăng ký commands trong constructor
             LoginCommand = new AsyncRelayCommand(Login);
             NavigateToRegisterCommand = new AsyncRelayCommand(NavigateToRegister);
         }
 
         private async Task Login()
         {
-            if (string.IsNullOrWhiteSpace(Email) || string.IsNullOrWhiteSpace(Password))
+            // Validate input trước khi gửi request
+            var validationResult = ValidateInput();
+            if (!validationResult.IsValid)
             {
-                await Toast.Make("Vui lòng nhập email và mật khẩu").Show();
+                await Toast.Make(validationResult.ErrorMessage).Show();
                 return;
             }
 
@@ -47,7 +49,7 @@ namespace ARMauiApp.ViewModels
             {
                 var loginDto = new UserLoginDto
                 {
-                    Email = Email,
+                    Email = Email.Trim(),
                     Password = Password
                 };
 
@@ -60,7 +62,6 @@ namespace ARMauiApp.ViewModels
                         : "Đăng nhập thành công!";
 
                     await Toast.Make(message).Show();
-                    // Navigate to main page
                     await Shell.Current.GoToAsync("//products");
                 }
                 else
@@ -75,6 +76,50 @@ namespace ARMauiApp.ViewModels
             finally
             {
                 IsLoading = false;
+            }
+        }
+
+        private (bool IsValid, string ErrorMessage) ValidateInput()
+        {
+            // Validate Email
+            if (string.IsNullOrWhiteSpace(Email))
+            {
+                return (false, "Email là bắt buộc");
+            }
+
+            if (!IsValidEmail(Email.Trim()))
+            {
+                return (false, "Định dạng email không hợp lệ");
+            }
+
+            // Validate Password
+            if (string.IsNullOrWhiteSpace(Password))
+            {
+                return (false, "Mật khẩu là bắt buộc");
+            }
+
+            if (Password.Length < 6)
+            {
+                return (false, "Mật khẩu phải có ít nhất 6 ký tự");
+            }
+
+            return (true, string.Empty);
+        }
+
+        private static bool IsValidEmail(string email)
+        {
+            if (string.IsNullOrWhiteSpace(email))
+                return false;
+
+            try
+            {
+                // Sử dụng EmailAddressAttribute để validate
+                var emailAttribute = new EmailAddressAttribute();
+                return emailAttribute.IsValid(email);
+            }
+            catch
+            {
+                return false;
             }
         }
 
